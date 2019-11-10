@@ -1,0 +1,11 @@
+>> DimProduct table column updates (replace lines 139-141)
+==================================================
+	StartDateKey int NOT NULL,
+	EndDateKey int NOT NULL CONSTRAINT [DF_DimProduct_EndDateKey] DEFAULT (99991231),
+	IsCurrent AS CAST(CASE WHEN EndDateKey = 99991231 THEN 1 ELSE 0 END AS BIT) PERSISTED
+
+
+>> DimProduct table column updates (replace lines 150-151)
+==================================================
+	 EXEC('INSERT INTO dbo.Tmp_DimProduct (ProductKey, ProductAlternateKey, ProductSubcategoryKey, WeightUnitMeasureCode, SizeUnitMeasureCode, EnglishProductName, SpanishProductName, FrenchProductName, StandardCost, FinishedGoodsFlag, Color, SafetyStockLevel, ReorderPoint, ListPrice, Size, SizeRange, Weight, DaysToManufacture, ProductLine, DealerPrice, Class, Style, ModelName, LargePhoto, EnglishDescription, FrenchDescription, ChineseDescription, ArabicDescription, HebrewDescription, ThaiDescription, GermanDescription, JapaneseDescription, TurkishDescription, StartDateKey, EndDateKey)
+		SELECT CONVERT(smallint, ProductKey), ProductAlternateKey, ISNULL(ProductSubcategoryKey, -1), WeightUnitMeasureCode, SizeUnitMeasureCode, EnglishProductName, SpanishProductName, FrenchProductName, StandardCost, FinishedGoodsFlag, Color, SafetyStockLevel, ReorderPoint, ListPrice, Size, SizeRange, Weight, DaysToManufacture, ProductLine, DealerPrice, Class, Style, ModelName, LargePhoto, EnglishDescription, FrenchDescription, ChineseDescription, ArabicDescription, HebrewDescription, ThaiDescription, GermanDescription, JapaneseDescription, TurkishDescription, [dbo].[udfConvertDateToDateKey](StartDate), [dbo].[udfConvertDateToDateKey](ISNULL(EndDate, ''99991231'')) FROM dbo.DimProduct WITH (HOLDLOCK TABLOCKX)')

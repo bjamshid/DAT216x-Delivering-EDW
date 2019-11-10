@@ -1,0 +1,862 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/13/2016 9:32:24 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="PETERINOSLO"
+  DTS:CreatorName="PETERINOSLO\peter"
+  DTS:DTSID="{484729BF-C320-471D-83A3-53CC246D1049}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="13.0.1601.5"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="LoadFactProductInventory"
+  DTS:PackageType="5"
+  DTS:ProtectionLevel="2"
+  DTS:VersionBuild="7"
+  DTS:VersionGUID="{F25B94CC-D2D8-4057-B649-D1817F154569}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Load in Transaction"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{D0604ED9-29B6-4460-BA13-161199C39D77}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load in Transaction"
+      DTS:TransactionOption="2">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Load in Transaction\Delete Existing Records"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{FDA838DD-7E4F-49A7-8062-CB363CD75941}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Delete Existing Records"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2016; © 2015 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{1EB9A85C-A220-4442-A56E-23200BE3F020}"
+              SQLTask:SqlStatementSource="DELETE [dbo].[FactProductInventory] WHERE [DateKey] = ?;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="$Project::ProcessDateKey"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="3"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Load in Transaction\Load FactProductInventory"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{1D969B8D-D85F-4853-8FCB-322DC7F0069B}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Load FactProductInventory"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\Load in Transaction\Load FactProductInventory\Add DateKey"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+                  name="Add DateKey"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\Load in Transaction\Load FactProductInventory\Add DateKey.Inputs[Derived Column Input]"
+                      description="Input to the Derived Column Transformation"
+                      name="Derived Column Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Add DateKey.Inputs[Derived Column Input].Columns[ProductKey]"
+                          cachedDataType="i2"
+                          cachedName="ProductKey"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Outputs[Lookup Match Output].Columns[ProductKey]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[REPLACENULL](#{Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Outputs[Lookup Match Output].Columns[ProductKey]},-1)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">REPLACENULL(ProductKey,-1)</property>
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Load in Transaction\Load FactProductInventory\Add DateKey.Outputs[Derived Column Output]"
+                      description="Default Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      name="Derived Column Output"
+                      synchronousInputId="Package\Load in Transaction\Load FactProductInventory\Add DateKey.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Add DateKey.Outputs[Derived Column Output].Columns[DateKey]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Add DateKey.Outputs[Derived Column Output].Columns[DateKey]"
+                          name="DateKey"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">@[$Project::ProcessDateKey]</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">@[$Project::ProcessDateKey]</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Load in Transaction\Load FactProductInventory\Add DateKey.Outputs[Derived Column Error Output]"
+                      description="Error Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Derived Column Error Output"
+                      synchronousInputId="Package\Load in Transaction\Load FactProductInventory\Add DateKey.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Add DateKey.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Add DateKey.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Add DateKey.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Add DateKey.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="FactProductInventory"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[FactProductInventory]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Connections[OleDbConnection]"
+                      connectionManagerID="{1EB9A85C-A220-4442-A56E-23200BE3F020}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[AdventureWorksDW2016]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Inputs[OLE DB Destination Input].Columns[UnitsBalance]"
+                          cachedDataType="i4"
+                          cachedName="UnitsBalance"
+                          externalMetadataColumnId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Inputs[OLE DB Destination Input].ExternalColumns[UnitsBalance]"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Output].Columns[UnitsBalance]" />
+                        <inputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Inputs[OLE DB Destination Input].Columns[ProductKey]"
+                          cachedDataType="i2"
+                          cachedName="ProductKey"
+                          externalMetadataColumnId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Inputs[OLE DB Destination Input].ExternalColumns[ProductKey]"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Outputs[Lookup Match Output].Columns[ProductKey]" />
+                        <inputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Inputs[OLE DB Destination Input].Columns[DateKey]"
+                          cachedDataType="i4"
+                          cachedName="DateKey"
+                          externalMetadataColumnId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Inputs[OLE DB Destination Input].ExternalColumns[DateKey]"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Add DateKey.Outputs[Derived Column Output].Columns[DateKey]" />
+                        <inputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Inputs[OLE DB Destination Input].Columns[StandardCost]"
+                          cachedDataType="cy"
+                          cachedName="StandardCost"
+                          externalMetadataColumnId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Inputs[OLE DB Destination Input].ExternalColumns[UnitCost]"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Output].Columns[StandardCost]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Inputs[OLE DB Destination Input].ExternalColumns[ProductKey]"
+                          dataType="i2"
+                          name="ProductKey" />
+                        <externalMetadataColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Inputs[OLE DB Destination Input].ExternalColumns[DateKey]"
+                          dataType="i4"
+                          name="DateKey" />
+                        <externalMetadataColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Inputs[OLE DB Destination Input].ExternalColumns[UnitCost]"
+                          dataType="cy"
+                          name="UnitCost" />
+                        <externalMetadataColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Inputs[OLE DB Destination Input].ExternalColumns[UnitsBalance]"
+                          dataType="i4"
+                          name="UnitsBalance" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+                  description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+                  name="Lookup ProductKey"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [ProductKey], [ProductAlternateKey] FROM [dbo].[DimProduct] WHERE [IsCurrent] = 1;</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT [ProductKey], [ProductAlternateKey] FROM [dbo].[DimProduct] WHERE [IsCurrent] = 1;) [refTable]
+where [refTable].[ProductAlternateKey] = ?</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="ProductKey" dataType="DT_I2" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProductAlternateKey" dataType="DT_WSTR" length="25" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap">#{Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Output].Columns[ProductNumber]};</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Connections[OleDbConnection]"
+                      connectionManagerID="{1EB9A85C-A220-4442-A56E-23200BE3F020}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[AdventureWorksDW2016]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Inputs[Lookup Input]"
+                      name="Lookup Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Inputs[Lookup Input].Columns[ProductNumber]"
+                          cachedDataType="wstr"
+                          cachedLength="25"
+                          cachedName="ProductNumber"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Output].Columns[ProductNumber]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">ProductAlternateKey</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Outputs[Lookup Match Output]"
+                      errorOrTruncationOperation="Lookup"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="Lookup Match Output"
+                      synchronousInputId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Inputs[Lookup Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Outputs[Lookup Match Output].Columns[ProductKey]"
+                          dataType="i2"
+                          errorOrTruncationOperation="Copy Column"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Outputs[Lookup Match Output].Columns[ProductKey]"
+                          name="ProductKey"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn">ProductKey</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Outputs[Lookup No Match Output]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="Lookup No Match Output"
+                      synchronousInputId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Inputs[Lookup Input]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Outputs[Lookup Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Lookup Error Output"
+                      synchronousInputId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Inputs[Lookup Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="Production_ProductInventory"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+	[p].[ProductNumber]
+	,[p].[StandardCost]
+	,SUM([pi].[Quantity]) AS [UnitsBalance]
+FROM
+	[Production].[Product] AS [p]
+	INNER JOIN [Production].[ProductInventory] AS [pi]
+		ON [pi].[ProductID] = [p].[ProductID]
+GROUP BY
+	[p].[ProductNumber]
+	,[p].[StandardCost];</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Connections[OleDbConnection]"
+                      connectionManagerID="{35E7A7E6-9760-4C0F-873F-47804ED02376}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[AdventureWorks2016]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Output].Columns[ProductNumber]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Output].ExternalColumns[ProductNumber]"
+                          length="25"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Output].Columns[ProductNumber]"
+                          name="ProductNumber"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Output].Columns[UnitsBalance]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Output].ExternalColumns[UnitsBalance]"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Output].Columns[UnitsBalance]"
+                          name="UnitsBalance"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Output].Columns[StandardCost]"
+                          dataType="cy"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Output].ExternalColumns[StandardCost]"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Output].Columns[StandardCost]"
+                          name="StandardCost"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Output].ExternalColumns[ProductNumber]"
+                          dataType="wstr"
+                          length="25"
+                          name="ProductNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Output].ExternalColumns[UnitsBalance]"
+                          dataType="i4"
+                          name="UnitsBalance" />
+                        <externalMetadataColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Output].ExternalColumns[StandardCost]"
+                          dataType="cy"
+                          name="StandardCost" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Error Output].Columns[ProductNumber]"
+                          dataType="wstr"
+                          length="25"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Error Output].Columns[ProductNumber]"
+                          name="ProductNumber" />
+                        <outputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Error Output].Columns[StandardCost]"
+                          dataType="cy"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Error Output].Columns[StandardCost]"
+                          name="StandardCost" />
+                        <outputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Error Output].Columns[UnitsBalance]"
+                          dataType="i4"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Error Output].Columns[UnitsBalance]"
+                          name="UnitsBalance" />
+                        <outputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Load in Transaction\Load FactProductInventory.Paths[Derived Column Output]"
+                  endId="Package\Load in Transaction\Load FactProductInventory\FactProductInventory.Inputs[OLE DB Destination Input]"
+                  name="Derived Column Output"
+                  startId="Package\Load in Transaction\Load FactProductInventory\Add DateKey.Outputs[Derived Column Output]" />
+                <path
+                  refId="Package\Load in Transaction\Load FactProductInventory.Paths[Lookup Match Output]"
+                  endId="Package\Load in Transaction\Load FactProductInventory\Add DateKey.Inputs[Derived Column Input]"
+                  name="Lookup Match Output"
+                  startId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Outputs[Lookup Match Output]" />
+                <path
+                  refId="Package\Load in Transaction\Load FactProductInventory.Paths[OLE DB Source Output]"
+                  endId="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey.Inputs[Lookup Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory.Outputs[OLE DB Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Load in Transaction.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{C0F2C658-2CDD-4C91-A300-07B148339704}"
+          DTS:From="Package\Load in Transaction\Delete Existing Records"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Load in Transaction\Load FactProductInventory" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="188.8,41.6"
+          Id="Package\Load in Transaction\Delete Existing Records"
+          TopLeft="29.0285733261889,37.6470607539774" />
+        <NodeLayout
+          Size="188.8,41.6"
+          Id="Package\Load in Transaction\Load FactProductInventory"
+          TopLeft="29.0285733261889,120.847061920826" />
+        <EdgeLayout
+          Id="Package\Load in Transaction.PrecedenceConstraints[Constraint]"
+          TopLeft="123.428573326189,79.2470607539774">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,41.6000011668486"
+              Start="0,0"
+              End="0,34.1000011668486">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,34.1000011668486" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="246.4,217.6"
+          Size="246.4,260.8"
+          Id="Package\Load in Transaction"
+          TopLeft="33.1428577072767,31.8117651520303" />
+        <AnnotationLayout
+          Text="This package loads the FactProductInventory table, &#xD;&#xA;and this table represents a period snapshot (daily) of &#xD;&#xA;product stock levels.&#xD;&#xA;&#xD;&#xA;A Sequence Container is used to ensure &#xD;&#xA;that all contained tasks execute within the context &#xD;&#xA;of a transaction. This guarantees complete success &#xD;&#xA;of complete failure of the container execution.&#xD;&#xA;&#xD;&#xA;The first task is an Execute SQL task, and it will delete &#xD;&#xA;any fact rows with DateKey values set to the ProcessDateKey. &#xD;&#xA;&#xD;&#xA;The second task is a Data Flow task, and it will load all &#xD;&#xA;products and their stock balances in to the fact table by &#xD;&#xA;using the ProcessDateKey value."
+          ParentId="Package"
+          FontInfo="{assembly:Null}"
+          Size="354.4,263.2"
+          Id="16285308-e1bd-4910-ae21-b87dffa4d8eb"
+          TopLeft="298.85714794665,34.870588724341" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Load in Transaction\Load FactProductInventory">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="215.2,41.6"
+          Id="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey"
+          TopLeft="30.8571433826369,119.090197748626" />
+        <NodeLayout
+          Size="215.2,41.6"
+          Id="Package\Load in Transaction\Load FactProductInventory\Add DateKey"
+          TopLeft="30.8571433826369,208.203924488609" />
+        <NodeLayout
+          Size="215.2,41.6"
+          Id="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory"
+          TopLeft="30.8571433826369,29.976471008644" />
+        <NodeLayout
+          Size="215.2,41.6"
+          Id="Package\Load in Transaction\Load FactProductInventory\FactProductInventory"
+          TopLeft="30.8571433826369,297.317651228591" />
+        <EdgeLayout
+          Id="Package\Load in Transaction\Load FactProductInventory.Paths[OLE DB Source Output]"
+          TopLeft="138.457143382637,71.576471008644">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,47.5137267399824"
+              Start="0,0"
+              End="0,40.0137267399824">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,40.0137267399824" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Load in Transaction\Load FactProductInventory.Paths[Lookup Match Output]"
+          TopLeft="138.457143382637,160.690197748626">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,47.5137267399824"
+              Start="0,0"
+              End="0,40.0137267399824">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,40.0137267399824" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,14.2021758699912,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Load in Transaction\Load FactProductInventory.Paths[Derived Column Output]"
+          TopLeft="138.457143382637,249.803924488609">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,47.5137267399824"
+              Start="0,0"
+              End="0,40.0137267399824">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,40.0137267399824" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <AnnotationLayout
+          Text="All current product stock balances are retrieved &#xD;&#xA;from the Production.ProductInventory table.&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;A Lookup transformation is used to retrieve the surrogate &#xD;&#xA;key of the DimProduct table is retrieved (only where &#xD;&#xA;IsCurrent = 1).&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;A Derived Column transformation is used to add &#xD;&#xA;the DateKey column which is the ProcessDateKey.&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;The rows are loaded in to the FactProductInventory table."
+          ParentId="Package\Load in Transaction\Load FactProductInventory"
+          FontInfo="{assembly:Null}"
+          Size="336,295.2"
+          Id="a5f1360f-e473-4b39-81fd-190332de48ae"
+          TopLeft="284.571433417651,26.9176474363334" />
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load in Transaction\Load FactProductInventory\Lookup ProductKey">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load in Transaction\Load FactProductInventory\Production_ProductInventory">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Load in Transaction\Load FactProductInventory\FactProductInventory">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

@@ -1,0 +1,13 @@
+>> Expression Task (Set DateToKey) expression
+==================================================
+@[User::DateKeyTo] =  @[$Project::ProcessDateKey] + 10000
+
+
+>> Execute SQL Task (Extend Dim Date): SQLStatement
+==================================================
+EXEC [dbo].[uspDimDateExtend] ?
+
+
+>> SSIS Master package T-SQL script: Line 04
+==================================================
+DECLARE @var0 int = (YEAR(GETDATE()) * 10000) + (MONTH(GETDATE()) * 100) + DAY(GETDATE())
